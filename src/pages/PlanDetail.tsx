@@ -7,13 +7,15 @@ import { ActivityEditor } from '../components/ActivityEditor';
 import { SightEditor } from '../components/SightEditor';
 import { NoteEditor } from '../components/NoteEditor';
 import { BlogEditor } from '../components/BlogEditor';
-import { NoteDrawer, ActivityModal, SightModal, JourneyEditModal, JourneyInfo } from '../components/Modals';
+import { NoteDrawer, ActivityModal, SightModal, JourneyEditModal, JourneyInfo, CityEditModal } from '../components/Modals';
 
 export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => void }) {
+  const [localData, setLocalData] = useState<TravelData>(data);
   const [selectedNote, setSelectedNote] = useState<Note | null>(null);
   const [selectedActivity, setSelectedActivity] = useState<Activity | null>(null);
   const [selectedSight, setSelectedSight] = useState<Sight | null>(null);
   const [isEditingJourney, setIsEditingJourney] = useState(false);
+  const [editingCity, setEditingCity] = useState<City | null>(null);
   const [journeyInfo, setJourneyInfo] = useState<JourneyInfo>({
     vol: '01',
     tag: 'Travel Manifesto',
@@ -70,8 +72,8 @@ export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => v
           </div>
           
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-12">
-            {data.cities.map(city => (
-              <CityCard key={city.id} city={city} />
+            {[...localData.cities].sort((a, b) => (a.order || 0) - (b.order || 0)).map(city => (
+              <CityCard key={city.id} city={city} onEdit={() => setEditingCity(city)} />
             ))}
           </div>
         </section>
@@ -122,6 +124,19 @@ export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => v
             setJourneyInfo(newInfo);
             setIsEditingJourney(false);
           }} 
+        />
+      )}
+      {editingCity && (
+        <CityEditModal
+          city={editingCity}
+          onClose={() => setEditingCity(null)}
+          onSave={(updatedCity) => {
+            setLocalData(prev => ({
+              ...prev,
+              cities: prev.cities.map(c => c.id === updatedCity.id ? updatedCity : c)
+            }));
+            setEditingCity(null);
+          }}
         />
       )}
       {selectedNote && <NoteDrawer note={selectedNote} onClose={() => setSelectedNote(null)} />}

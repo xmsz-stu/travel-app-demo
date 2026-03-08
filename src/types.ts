@@ -2,16 +2,18 @@ export interface CityPositioning {
   unique: { keyword: string; desc: string; image?: string }[];
   core: { keyword: string; desc: string; image?: string }[];
   basic: { keyword: string; desc: string; icon?: string }[];
-  general: string[];
+  general: { keyword: string; desc: string; image?: string; icon?: string }[];
 }
 
 export interface City {
   id: string;
   name: string;
+  chineseName?: string;
   region: string;
   bgColor: string;
   coverImage: string;
   positioning: CityPositioning;
+  order?: number;
 }
 
 export type ChecklistType = 'normal' | 'image' | 'ranking';

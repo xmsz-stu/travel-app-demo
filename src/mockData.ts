@@ -21,7 +21,13 @@ export const mockData: TravelData = {
           { keyword: "Temple Walks", desc: "Hundreds of accessible historic sites.", icon: "Map" },
           { keyword: "Kaiseki", desc: "Traditional multi-course dining.", icon: "Utensils" }
         ],
-        general: ["Historic", "Cultural", "Quiet", "Walkable", "Seasonal"]
+        general: [
+          { keyword: "Historic", desc: "Rich in history and ancient traditions" },
+          { keyword: "Cultural", desc: "Deep cultural roots and arts" },
+          { keyword: "Quiet", desc: "Peaceful and serene atmosphere" },
+          { keyword: "Walkable", desc: "Easy to explore on foot" },
+          { keyword: "Seasonal", desc: "Beautiful changes across four seasons" }
+        ]
       }
     },
     {
@@ -42,7 +48,12 @@ export const mockData: TravelData = {
           { keyword: "Bistros", desc: "Classic French dining on every corner.", icon: "Coffee" },
           { keyword: "Fashion", desc: "Global hub for haute couture.", icon: "ShoppingBag" }
         ],
-        general: ["Romantic", "Historic", "Gastronomy", "Artistic"]
+        general: [
+          { keyword: "Romantic", desc: "The city of love and romance" },
+          { keyword: "Historic", desc: "Centuries of European history" },
+          { keyword: "Gastronomy", desc: "World-class culinary experiences" },
+          { keyword: "Artistic", desc: "A global center for art and culture" }
+        ]
       }
     }
   ],

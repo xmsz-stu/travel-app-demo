@@ -52,6 +52,192 @@ function IconEditModal({ initialIcon, onClose, onSave }: { initialIcon: string, 
   );
 }
 
+export function ChecklistEditModal({
+  checklist,
+  onClose,
+  onSave
+}: {
+  checklist: Checklist;
+  onClose: () => void;
+  onSave: (checklist: Checklist) => void;
+}) {
+  const [formData, setFormData] = useState<Checklist>(checklist);
+  const [editingImage, setEditingImage] = useState<{ idx: number, current: string } | null>(null);
+  const [editingIcon, setEditingIcon] = useState<{ idx: number, current: string } | null>(null);
+
+  const updateItem = (idx: number, field: string, value: any) => {
+    const newItems = [...formData.items];
+    newItems[idx] = { ...newItems[idx], [field]: value };
+    setFormData({ ...formData, items: newItems });
+  };
+
+  const addItem = () => {
+    const newItem = {
+      id: Date.now(),
+      text: '',
+      completed: false,
+      subtitle: '',
+      image: ''
+    };
+    setFormData({ ...formData, items: [...formData.items, newItem] });
+  };
+
+  const removeItem = (idx: number) => {
+    const newItems = [...formData.items];
+    newItems.splice(idx, 1);
+    setFormData({ ...formData, items: newItems });
+  };
+
+  const handleSaveImage = (url: string) => {
+    if (editingImage) {
+      updateItem(editingImage.idx, 'image', url);
+      setEditingImage(null);
+    }
+  };
+
+  const handleSaveIcon = (icon: string) => {
+    if (editingIcon) {
+      updateItem(editingIcon.idx, 'image', icon);
+      setEditingIcon(null);
+    }
+  };
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute inset-0 bg-graphite/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-4xl bg-paper shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between p-6 border-b border-graphite/10 shrink-0">
+          <h3 className="font-serif text-2xl text-graphite">Edit Checklist</h3>
+          <button onClick={onClose} className="p-2 hover:bg-graphite/5 rounded-full transition-colors">
+            <X className="w-5 h-5 text-graphite/50" />
+          </button>
+        </div>
+        <div className="p-8 space-y-10 overflow-y-auto flex-1">
+          {/* Basic Info */}
+          <div className="space-y-6">
+            <h4 className="text-sm font-sans tracking-widest uppercase text-graphite/40 font-semibold border-b border-graphite/10 pb-2">Basic Info</h4>
+            
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Title</label>
+              <input type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-serif text-xl" />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="space-y-3">
+                <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Category</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'food', icon: Icons.Utensils, label: 'Food' },
+                    { id: 'restaurant', icon: Icons.Coffee, label: 'Restaurant' },
+                    { id: 'souvenir', icon: Icons.Gift, label: 'Souvenir' },
+                    { id: 'packing', icon: Icons.ShoppingBag, label: 'Packing' },
+                    { id: 'general', icon: Icons.Star, label: 'General' },
+                  ].map(cat => (
+                    <button
+                      key={cat.id}
+                      onClick={() => setFormData({...formData, category: cat.id as any})}
+                      className={`flex items-center gap-2 px-3 py-2 rounded border transition-colors ${formData.category === cat.id ? 'border-sunset bg-sunset/5 text-sunset' : 'border-graphite/20 text-graphite/60 hover:border-graphite/40 hover:bg-graphite/5'}`}
+                    >
+                      <cat.icon className="w-4 h-4" />
+                      <span className="text-xs font-sans uppercase tracking-widest">{cat.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div className="space-y-3">
+                <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Type</label>
+                <div className="flex flex-wrap gap-2">
+                  {[
+                    { id: 'normal', icon: Icons.List, label: 'Normal' },
+                    { id: 'image', icon: Icons.Image, label: 'Image' },
+                    { id: 'ranking', icon: Icons.Trophy, label: 'Ranking' },
+                  ].map(type => (
+                    <button
+                      key={type.id}
+                      onClick={() => setFormData({...formData, type: type.id as any})}
+                      className={`flex items-center gap-2 px-3 py-2 rounded border transition-colors ${formData.type === type.id ? 'border-sunset bg-sunset/5 text-sunset' : 'border-graphite/20 text-graphite/60 hover:border-graphite/40 hover:bg-graphite/5'}`}
+                    >
+                      <type.icon className="w-4 h-4" />
+                      <span className="text-xs font-sans uppercase tracking-widest">{type.label}</span>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Items */}
+          <div className="space-y-6">
+            <div className="flex items-center justify-between border-b border-graphite/10 pb-2">
+              <h4 className="text-sm font-sans tracking-widest uppercase text-graphite/40 font-semibold">Items</h4>
+              <button onClick={addItem} className="text-xs text-sunset hover:text-sunset/80 uppercase tracking-widest font-medium">+ Add Item</button>
+            </div>
+            <div className="space-y-4">
+              {formData.items.map((item, idx) => {
+                const isImageUrl = item.image?.startsWith('http') || item.image?.startsWith('data:');
+                const IconCmp = !isImageUrl && item.image ? (Icons as any)[item.image] : null;
+
+                return (
+                  <div key={item.id} className="p-4 border border-graphite/10 bg-graphite/5 relative group flex gap-4 items-start">
+                    <button onClick={() => removeItem(idx)} className="absolute top-2 right-2 p-1 text-graphite/40 hover:text-sunset opacity-0 group-hover:opacity-100 transition-opacity"><X className="w-4 h-4" /></button>
+                    
+                    <div className="flex flex-col gap-2 shrink-0">
+                      <button 
+                        onClick={() => setEditingImage({ idx, current: isImageUrl ? item.image || '' : '' })}
+                        className="w-16 h-16 bg-graphite/10 border border-graphite/20 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity rounded"
+                        title="Edit Image"
+                      >
+                        {isImageUrl ? <img src={item.image} className="w-full h-full object-cover" referrerPolicy="no-referrer" /> : <span className="text-[10px] text-graphite/40 uppercase">Img</span>}
+                      </button>
+                      <button 
+                        onClick={() => setEditingIcon({ idx, current: !isImageUrl ? item.image || '' : '' })}
+                        className="w-16 h-8 bg-graphite/10 border border-graphite/20 flex items-center justify-center overflow-hidden hover:opacity-80 transition-opacity rounded"
+                        title="Edit Icon"
+                      >
+                        {IconCmp ? <IconCmp className="w-4 h-4 text-graphite/60" /> : <span className="text-[10px] text-graphite/40 uppercase">Icon</span>}
+                      </button>
+                    </div>
+
+                    <div className="flex-1 space-y-3 min-w-0 pr-6">
+                      <div className="flex items-center gap-3">
+                        <input type="checkbox" checked={item.completed} onChange={e => updateItem(idx, 'completed', e.target.checked)} className="w-4 h-4 accent-sunset" />
+                        <input value={item.text} onChange={e => updateItem(idx, 'text', e.target.value)} placeholder="Item Text" className="flex-1 bg-transparent border-b border-graphite/20 py-1 focus:outline-none focus:border-sunset font-serif text-lg" />
+                      </div>
+                      <input value={item.subtitle || ''} onChange={e => updateItem(idx, 'subtitle', e.target.value)} placeholder="Subtitle / Description" className="w-full bg-transparent border-b border-graphite/20 py-1 focus:outline-none focus:border-sunset font-sans text-sm" />
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+        <div className="p-6 border-t border-graphite/10 flex justify-between gap-4 shrink-0 bg-paper">
+          <button onClick={() => onSave({ ...formData, _delete: true } as any)} className="px-6 py-2 text-xs font-sans tracking-widest uppercase text-red-500 hover:text-red-600 transition-colors">Delete</button>
+          <div className="flex gap-4">
+            <button onClick={onClose} className="px-6 py-2 text-xs font-sans tracking-widest uppercase text-graphite/60 hover:text-graphite transition-colors">Cancel</button>
+            <button onClick={() => onSave(formData)} className="px-6 py-2 bg-graphite text-paper text-xs font-sans tracking-widest uppercase hover:bg-black transition-colors">Save Changes</button>
+          </div>
+        </div>
+      </div>
+
+      {editingImage && (
+        <ImageEditModal 
+          initialUrl={editingImage.current} 
+          onClose={() => setEditingImage(null)} 
+          onSave={handleSaveImage} 
+        />
+      )}
+      {editingIcon && (
+        <IconEditModal 
+          initialIcon={editingIcon.current} 
+          onClose={() => setEditingIcon(null)} 
+          onSave={handleSaveIcon} 
+        />
+      )}
+    </div>
+  );
+}
+
 export function NoteDrawer({ note, onClose }: { note: Note, onClose: () => void }) {
   return (
     <div className="fixed inset-0 z-50 flex justify-end">

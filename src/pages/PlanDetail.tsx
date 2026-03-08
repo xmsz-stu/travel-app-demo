@@ -7,7 +7,8 @@ import { ActivityEditor } from '../components/ActivityEditor';
 import { SightEditor } from '../components/SightEditor';
 import { NoteEditor } from '../components/NoteEditor';
 import { BlogEditor } from '../components/BlogEditor';
-import { NoteDrawer, ActivityModal, SightModal, JourneyEditModal, JourneyInfo, CityEditModal } from '../components/Modals';
+import { NoteDrawer, ActivityModal, SightModal, JourneyEditModal, JourneyInfo, CityEditModal, ChecklistEditModal } from '../components/Modals';
+import { Checklist } from '../types';
 
 export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => void }) {
   const [localData, setLocalData] = useState<TravelData>(data);
@@ -16,6 +17,7 @@ export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => v
   const [selectedSight, setSelectedSight] = useState<Sight | null>(null);
   const [isEditingJourney, setIsEditingJourney] = useState(false);
   const [editingCity, setEditingCity] = useState<City | null>(null);
+  const [editingChecklist, setEditingChecklist] = useState<Checklist | null>(null);
   const [journeyInfo, setJourneyInfo] = useState<JourneyInfo>({
     vol: '01',
     tag: 'Travel Manifesto',
@@ -87,10 +89,30 @@ export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => v
               </h2>
               <p className="text-graphite/50 font-sans text-sm">Organize everything from packing lists to restaurant rankings.</p>
             </div>
-            <button className="p-3 text-graphite hover:bg-graphite/5 rounded-full transition-colors border border-graphite/20"><Filter className="w-5 h-5" /></button>
+            <div className="flex items-center gap-4">
+              <button 
+                onClick={() => setEditingChecklist({
+                  id: Date.now(),
+                  cityId: localData.cities[0]?.id || '',
+                  title: 'New Collection',
+                  type: 'normal',
+                  category: 'general',
+                  items: []
+                })}
+                className="flex items-center gap-2 px-5 py-2.5 bg-transparent border border-graphite/20 text-graphite rounded-full text-xs uppercase tracking-widest font-medium hover:bg-graphite hover:text-paper transition-colors"
+              >
+                <span>+ Add Collection</span>
+              </button>
+              <button className="p-3 text-graphite hover:bg-graphite/5 rounded-full transition-colors border border-graphite/20"><Filter className="w-5 h-5" /></button>
+            </div>
           </div>
           
-          <ChecklistMasonry checklists={data.checklists} notes={data.notes} onNoteSelect={setSelectedNote} />
+          <ChecklistMasonry 
+            checklists={localData.checklists} 
+            notes={localData.notes} 
+            onNoteSelect={setSelectedNote}
+            onEdit={(checklist) => setEditingChecklist(checklist)}
+          />
         </section>
 
         {/* Section 3: Sights & Activities */}
@@ -136,6 +158,36 @@ export function PlanDetail({ data, onBack }: { data: TravelData, onBack: () => v
               cities: prev.cities.map(c => c.id === updatedCity.id ? updatedCity : c)
             }));
             setEditingCity(null);
+          }}
+        />
+      )}
+      {editingChecklist && (
+        <ChecklistEditModal
+          checklist={editingChecklist}
+          onClose={() => setEditingChecklist(null)}
+          onSave={(updatedChecklist) => {
+            setLocalData(prev => {
+              if ((updatedChecklist as any)._delete) {
+                return {
+                  ...prev,
+                  checklists: prev.checklists.filter(c => c.id !== updatedChecklist.id)
+                };
+              }
+
+              const exists = prev.checklists.some(c => c.id === updatedChecklist.id);
+              if (exists) {
+                return {
+                  ...prev,
+                  checklists: prev.checklists.map(c => c.id === updatedChecklist.id ? updatedChecklist : c)
+                };
+              } else {
+                return {
+                  ...prev,
+                  checklists: [...prev.checklists, updatedChecklist]
+                };
+              }
+            });
+            setEditingChecklist(null);
           }}
         />
       )}

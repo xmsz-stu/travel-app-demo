@@ -76,6 +76,30 @@ export interface Note {
   likes: number;
 }
 
+export interface DiscoveryPost {
+  id: string;
+  type: 'video' | 'text';
+  author: {
+    name: string;
+    avatar: string;
+    platform: string;
+  };
+  title: string;
+  content: string;
+  thumbnail?: string;
+  tags: {
+    country: string;
+    city: string;
+    sight?: string;
+  };
+  aiSummary: string;
+  stats: {
+    likes: number;
+    comments: number;
+    shares: number;
+  };
+}
+
 export interface TravelData {
   cities: City[];
   checklists: Checklist[];
@@ -83,4 +107,5 @@ export interface TravelData {
   sights: Sight[];
   notes: Note[];
   blog: string;
+  discoveryPosts?: DiscoveryPost[];
 }

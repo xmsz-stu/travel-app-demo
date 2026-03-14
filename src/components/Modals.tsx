@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { X, Star, Clock, MapPin, Heart, Upload } from 'lucide-react';
 import * as Icons from 'lucide-react';
-import { Note, Activity, Sight, City } from '../types';
+import { Note, Activity, Sight, City, Checklist } from '../types';
 
 function ImageEditModal({ initialUrl, onClose, onSave }: { initialUrl: string, onClose: () => void, onSave: (url: string) => void }) {
   const [url, setUrl] = useState(initialUrl);
@@ -344,6 +344,12 @@ export interface JourneyInfo {
   title2: string;
   description: string;
   coverImage: string;
+  route?: string[];
+  keywords?: string[];
+  weather?: string;
+  date?: string;
+  duration?: string;
+  pace?: string;
 }
 
 export function JourneyEditModal({ 
@@ -437,6 +443,74 @@ export function JourneyEditModal({
                 <img src={formData.coverImage} alt="Cover" className="w-full h-full object-cover" referrerPolicy="no-referrer" />
               </div>
             )}
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Route (comma separated)</label>
+            <input 
+              type="text" 
+              value={formData.route?.join(', ') || ''}
+              onChange={e => setFormData({...formData, route: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
+              className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+              placeholder="e.g. Osaka, Kyoto, Nara"
+            />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Keywords (comma separated)</label>
+            <input 
+              type="text" 
+              value={formData.keywords?.join(', ') || ''}
+              onChange={e => setFormData({...formData, keywords: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})}
+              className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+              placeholder="e.g. Culture, Food, Photography"
+            />
+          </div>
+
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Dates</label>
+              <input 
+                type="text" 
+                value={formData.date || ''}
+                onChange={e => setFormData({...formData, date: e.target.value})}
+                className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+                placeholder="e.g. Oct 12 - Oct 18"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Duration</label>
+              <input 
+                type="text" 
+                value={formData.duration || ''}
+                onChange={e => setFormData({...formData, duration: e.target.value})}
+                className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+                placeholder="e.g. 7 Days"
+              />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-2 gap-8">
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Weather</label>
+              <input 
+                type="text" 
+                value={formData.weather || ''}
+                onChange={e => setFormData({...formData, weather: e.target.value})}
+                className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+                placeholder="e.g. 15°C - 22°C, Mostly Sunny"
+              />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Pace</label>
+              <input 
+                type="text" 
+                value={formData.pace || ''}
+                onChange={e => setFormData({...formData, pace: e.target.value})}
+                className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans"
+                placeholder="e.g. Moderate"
+              />
+            </div>
           </div>
         </div>
         <div className="p-6 border-t border-graphite/10 flex justify-end gap-4 shrink-0">
@@ -620,6 +694,239 @@ export function CityEditModal({
           initialIcon={editingIcon.current} 
           onClose={() => setEditingIcon(null)} 
           onSave={handleSaveIcon} 
+        />
+      )}
+    </div>
+  );
+}
+
+export function SightEditModal({ sight, onClose, onSave }: { sight: Sight, onClose: () => void, onSave: (s: Sight) => void }) {
+  const [formData, setFormData] = useState<Sight>(sight);
+  const [editingImage, setEditingImage] = useState<boolean>(false);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute inset-0 bg-graphite/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-2xl bg-paper shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between p-6 border-b border-graphite/10">
+          <h3 className="text-xl font-serif text-graphite">Edit Sight</h3>
+          <button onClick={onClose} className="p-2 hover:bg-graphite/5 rounded-full transition-colors">
+            <X className="w-5 h-5 text-graphite/50" />
+          </button>
+        </div>
+        
+        <div className="p-8 space-y-6 overflow-y-auto flex-1">
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Image</label>
+            <button 
+              onClick={() => setEditingImage(true)}
+              className="w-full h-48 bg-graphite/5 border border-graphite/20 rounded-lg overflow-hidden hover:opacity-90 transition-opacity relative group"
+            >
+              {formData.image ? (
+                <img src={formData.image} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-graphite/40 text-sm uppercase tracking-widest">Click to add image</div>
+              )}
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Name</label>
+              <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-serif text-xl" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Location</label>
+              <input type="text" value={formData.location} onChange={e => setFormData({...formData, location: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Rating</label>
+            <input type="number" step="0.1" value={formData.rating} onChange={e => setFormData({...formData, rating: parseFloat(e.target.value) || 0})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Summary</label>
+            <textarea value={formData.summary} onChange={e => setFormData({...formData, summary: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans resize-none h-20" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Details</label>
+            <textarea value={formData.details} onChange={e => setFormData({...formData, details: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans resize-none h-32" />
+          </div>
+        </div>
+
+        <div className="p-6 border-t border-graphite/10 flex justify-between bg-graphite/5">
+          <button onClick={() => onSave({ ...formData, _delete: true } as any)} className="px-6 py-2.5 text-red-500 hover:bg-red-500/10 rounded-full text-xs uppercase tracking-widest font-medium transition-colors">
+            Delete
+          </button>
+          <div className="flex gap-4">
+            <button onClick={onClose} className="px-6 py-2.5 text-graphite/60 hover:text-graphite text-xs uppercase tracking-widest font-medium transition-colors">Cancel</button>
+            <button onClick={() => onSave(formData)} className="px-8 py-2.5 bg-graphite text-paper rounded-full text-xs uppercase tracking-widest font-medium hover:bg-black transition-colors shadow-lg">Save</button>
+          </div>
+        </div>
+      </div>
+      {editingImage && (
+        <ImageEditModal
+          initialUrl={formData.image}
+          onSave={(url) => { setFormData({...formData, image: url}); setEditingImage(false); }}
+          onClose={() => setEditingImage(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+export function ActivityEditModal({ activity, onClose, onSave }: { activity: Activity, onClose: () => void, onSave: (a: Activity) => void }) {
+  const [formData, setFormData] = useState<Activity>(activity);
+  const [editingImage, setEditingImage] = useState<boolean>(false);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute inset-0 bg-graphite/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-2xl bg-paper shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between p-6 border-b border-graphite/10">
+          <h3 className="text-xl font-serif text-graphite">Edit Activity</h3>
+          <button onClick={onClose} className="p-2 hover:bg-graphite/5 rounded-full transition-colors">
+            <X className="w-5 h-5 text-graphite/50" />
+          </button>
+        </div>
+        
+        <div className="p-8 space-y-6 overflow-y-auto flex-1">
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Image</label>
+            <button 
+              onClick={() => setEditingImage(true)}
+              className="w-full h-48 bg-graphite/5 border border-graphite/20 rounded-lg overflow-hidden hover:opacity-90 transition-opacity relative group"
+            >
+              {formData.image ? (
+                <img src={formData.image} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-graphite/40 text-sm uppercase tracking-widest">Click to add image</div>
+              )}
+            </button>
+          </div>
+          
+          <div className="grid grid-cols-2 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Name</label>
+              <input type="text" value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-serif text-xl" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Duration</label>
+              <input type="text" value={formData.duration} onChange={e => setFormData({...formData, duration: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+            </div>
+          </div>
+
+          <div className="grid grid-cols-3 gap-6">
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Rating</label>
+              <input type="number" step="0.1" value={formData.rating} onChange={e => setFormData({...formData, rating: parseFloat(e.target.value) || 0})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Reviews</label>
+              <input type="number" value={formData.reviews} onChange={e => setFormData({...formData, reviews: parseInt(e.target.value) || 0})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+            </div>
+            <div className="space-y-2">
+              <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Price Level</label>
+              <input type="text" value={formData.priceLevel} onChange={e => setFormData({...formData, priceLevel: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Highlights (comma separated)</label>
+            <input type="text" value={formData.highlights.join(', ')} onChange={e => setFormData({...formData, highlights: e.target.value.split(',').map(s => s.trim()).filter(Boolean)})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Description</label>
+            <textarea value={formData.desc} onChange={e => setFormData({...formData, desc: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans resize-none h-20" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Details</label>
+            <textarea value={formData.details} onChange={e => setFormData({...formData, details: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans resize-none h-32" />
+          </div>
+        </div>
+
+        <div className="p-6 border-t border-graphite/10 flex justify-between bg-graphite/5">
+          <button onClick={() => onSave({ ...formData, _delete: true } as any)} className="px-6 py-2.5 text-red-500 hover:bg-red-500/10 rounded-full text-xs uppercase tracking-widest font-medium transition-colors">
+            Delete
+          </button>
+          <div className="flex gap-4">
+            <button onClick={onClose} className="px-6 py-2.5 text-graphite/60 hover:text-graphite text-xs uppercase tracking-widest font-medium transition-colors">Cancel</button>
+            <button onClick={() => onSave(formData)} className="px-8 py-2.5 bg-graphite text-paper rounded-full text-xs uppercase tracking-widest font-medium hover:bg-black transition-colors shadow-lg">Save</button>
+          </div>
+        </div>
+      </div>
+      {editingImage && (
+        <ImageEditModal
+          initialUrl={formData.image}
+          onSave={(url) => { setFormData({...formData, image: url}); setEditingImage(false); }}
+          onClose={() => setEditingImage(false)}
+        />
+      )}
+    </div>
+  );
+}
+
+export function NoteEditModal({ note, onClose, onSave }: { note: Note, onClose: () => void, onSave: (n: Note) => void }) {
+  const [formData, setFormData] = useState<Note>(note);
+  const [editingImage, setEditingImage] = useState<boolean>(false);
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6">
+      <div className="absolute inset-0 bg-graphite/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="relative w-full max-w-2xl bg-paper shadow-2xl overflow-hidden animate-in zoom-in-95 duration-300 flex flex-col max-h-[90vh]">
+        <div className="flex items-center justify-between p-6 border-b border-graphite/10">
+          <h3 className="text-xl font-serif text-graphite">Edit Note</h3>
+          <button onClick={onClose} className="p-2 hover:bg-graphite/5 rounded-full transition-colors">
+            <X className="w-5 h-5 text-graphite/50" />
+          </button>
+        </div>
+        
+        <div className="p-8 space-y-6 overflow-y-auto flex-1">
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Image</label>
+            <button 
+              onClick={() => setEditingImage(true)}
+              className="w-full h-48 bg-graphite/5 border border-graphite/20 rounded-lg overflow-hidden hover:opacity-90 transition-opacity relative group"
+            >
+              {formData.image ? (
+                <img src={formData.image} className="w-full h-full object-cover" referrerPolicy="no-referrer" />
+              ) : (
+                <div className="w-full h-full flex items-center justify-center text-graphite/40 text-sm uppercase tracking-widest">Click to add image</div>
+              )}
+            </button>
+          </div>
+          
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Title</label>
+            <input type="text" value={formData.title} onChange={e => setFormData({...formData, title: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-serif text-xl" />
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-xs font-sans tracking-widest uppercase text-graphite/50">Content</label>
+            <textarea value={formData.content} onChange={e => setFormData({...formData, content: e.target.value})} className="w-full bg-transparent border-b border-graphite/20 py-2 focus:outline-none focus:border-sunset transition-colors font-sans resize-none h-48" />
+          </div>
+        </div>
+
+        <div className="p-6 border-t border-graphite/10 flex justify-between bg-graphite/5">
+          <button onClick={() => onSave({ ...formData, _delete: true } as any)} className="px-6 py-2.5 text-red-500 hover:bg-red-500/10 rounded-full text-xs uppercase tracking-widest font-medium transition-colors">
+            Delete
+          </button>
+          <div className="flex gap-4">
+            <button onClick={onClose} className="px-6 py-2.5 text-graphite/60 hover:text-graphite text-xs uppercase tracking-widest font-medium transition-colors">Cancel</button>
+            <button onClick={() => onSave(formData)} className="px-8 py-2.5 bg-graphite text-paper rounded-full text-xs uppercase tracking-widest font-medium hover:bg-black transition-colors shadow-lg">Save</button>
+          </div>
+        </div>
+      </div>
+      {editingImage && (
+        <ImageEditModal
+          initialUrl={formData.image || ''}
+          onSave={(url) => { setFormData({...formData, image: url}); setEditingImage(false); }}
+          onClose={() => setEditingImage(false)}
         />
       )}
     </div>

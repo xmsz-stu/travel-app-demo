@@ -2,7 +2,7 @@ import React from 'react';
 import * as Icons from 'lucide-react';
 import { City } from '../types';
 
-export function CityCard({ city, onEdit }: { city: City, onEdit?: () => void }) {
+export const CityCard: React.FC<{ city: City, onEdit?: () => void }> = ({ city, onEdit }) => {
   return (
     <div className="bg-transparent flex flex-col group relative">
       {onEdit && (

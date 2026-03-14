@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function BlogEditor({ content }: { content: string }) {
+export function BlogEditor({ content, onChange }: { content: string, onChange?: (c: string) => void }) {
   return (
     <div className="bg-transparent border border-graphite/10 p-8 sm:p-12 relative">
       {/* Decorative corners */}
@@ -24,7 +24,8 @@ export function BlogEditor({ content }: { content: string }) {
         <textarea 
           className="w-full min-h-[400px] resize-none outline-none text-lg text-graphite/80 leading-loose font-serif bg-transparent placeholder:text-graphite/20"
           placeholder="Start writing your travel story here... Type @ to mention a sight or activity."
-          defaultValue={content}
+          value={content}
+          onChange={(e) => onChange?.(e.target.value)}
         />
       </div>
     </div>

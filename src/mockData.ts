@@ -60,6 +60,7 @@ export const mockData: TravelData = {
   checklists: [
     {
       id: 1,
+      cityId: '1',
       title: "Pre-trip Essentials",
       type: "normal",
       category: "packing",
@@ -71,6 +72,7 @@ export const mockData: TravelData = {
     },
     {
       id: 2,
+      cityId: '1',
       title: "Top 3 Matcha Spots",
       type: "ranking",
       category: "food",
@@ -82,6 +84,7 @@ export const mockData: TravelData = {
     },
     {
       id: 3,
+      cityId: '1',
       title: "Must-Buy Souvenirs",
       type: "image",
       category: "souvenir",
@@ -94,6 +97,7 @@ export const mockData: TravelData = {
   activities: [
     {
       id: 1,
+      cityId: '1',
       name: "Traditional Tea Ceremony",
       image: "https://images.unsplash.com/photo-1545042746-ec9e5a59b359?q=80&w=1974&auto=format&fit=crop",
       desc: "Experience the way of tea in a historic machiya. Learn the etiquette and enjoy premium matcha.",
@@ -107,6 +111,7 @@ export const mockData: TravelData = {
     },
     {
       id: 2,
+      cityId: '1',
       name: "Arashiyama Bamboo Grove Walk",
       image: "https://images.unsplash.com/photo-1578637387939-43c525550085?q=80&w=2070&auto=format&fit=crop",
       desc: "A serene early morning walk through the towering bamboo stalks. Best visited before 8 AM.",
@@ -122,6 +127,7 @@ export const mockData: TravelData = {
   sights: [
     {
       id: 1,
+      cityId: '1',
       name: "Fushimi Inari Taisha",
       location: "Fushimi Ward, Kyoto",
       rating: 4.9,
@@ -131,6 +137,7 @@ export const mockData: TravelData = {
     },
     {
       id: 2,
+      cityId: '1',
       name: "Kiyomizu-dera",
       location: "Higashiyama Ward, Kyoto",
       rating: 4.8,
@@ -142,6 +149,7 @@ export const mockData: TravelData = {
   notes: [
     {
       id: 301,
+      cityId: '1',
       title: "JR Pass Exchange Guide",
       content: "Exchange your voucher at Kyoto Station Central Gate. Expect a 30-min queue during peak hours (9 AM - 11 AM). Don't forget your physical passport!",
       image: "https://images.unsplash.com/photo-1552084117-56a98a961685?q=80&w=2014&auto=format&fit=crop",
@@ -150,6 +158,7 @@ export const mockData: TravelData = {
     },
     {
       id: 302,
+      cityId: '1',
       title: "Tsujiri Queues & Tips",
       content: "The Gion main store often has a 1-hour wait. Try the Kyoto Station branch for a shorter queue. The seasonal parfaits are always worth it.",
       author: { name: "Matcha Lover", avatar: "https://i.pravatar.cc/150?u=matcha" },
@@ -157,6 +166,7 @@ export const mockData: TravelData = {
     },
     {
       id: 303,
+      cityId: '1',
       title: "Bus Pass Update",
       content: "The 700¥ daily bus pass is no longer sold on the bus. Buy it at the station or use an IC card (Suica/Pasmo works fine in Kyoto).",
       image: "https://images.unsplash.com/photo-1542051812871-758502109a58?q=80&w=2070&auto=format&fit=crop",
@@ -164,5 +174,97 @@ export const mockData: TravelData = {
       likes: 256
     }
   ],
-  blog: "Kyoto is a city where the past and present coexist beautifully. Walking through the streets of Gion at dusk, you might catch a glimpse of a geiko hurrying to an appointment, while just a few streets away, modern cafes serve innovative matcha creations.\n\nOur journey began at the iconic Fushimi Inari Taisha. Arriving at 7 AM was the best decision we made—the crisp morning air and the absence of crowds made the hike through the vermilion gates feel truly spiritual."
+  blog: "Kyoto is a city where the past and present coexist beautifully. Walking through the streets of Gion at dusk, you might catch a glimpse of a geiko hurrying to an appointment, while just a few streets away, modern cafes serve innovative matcha creations.\n\nOur journey began at the iconic Fushimi Inari Taisha. Arriving at 7 AM was the best decision we made—the crisp morning air and the absence of crowds made the hike through the vermilion gates feel truly spiritual.",
+  discoveryPosts: [
+    {
+      id: 'd1',
+      type: 'video',
+      author: {
+        name: 'TravelWithMe',
+        avatar: 'https://i.pravatar.cc/150?u=twm',
+        platform: 'TikTok'
+      },
+      title: 'Kyoto Hidden Gems You MUST Visit!',
+      content: 'I spent 3 days in Kyoto and found these amazing spots that no one tells you about. From secret temples to the best street food!',
+      thumbnail: 'https://images.unsplash.com/photo-1493976040374-85c8e12f0c0e?q=80&w=2070&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Kyoto', sight: 'Arashiyama' },
+      aiSummary: 'This video highlights lesser-known locations in Kyoto, specifically focusing on the Arashiyama area. It recommends visiting early to avoid crowds and identifies three specific "secret" temples with beautiful moss gardens.',
+      stats: { likes: 12500, comments: 450, shares: 2100 }
+    },
+    {
+      id: 'd2',
+      type: 'text',
+      author: {
+        name: 'NomadExplorer',
+        avatar: 'https://i.pravatar.cc/150?u=nomad',
+        platform: 'Instagram'
+      },
+      title: 'Ultimate Osaka Food Guide 2024',
+      content: 'Osaka is truly the kitchen of Japan. Here is my complete list of what to eat in Dotonbori and beyond. Don\'t miss the takoyaki at the corner stall!',
+      thumbnail: 'https://images.unsplash.com/photo-1590247813693-5541d1c609fd?q=80&w=2109&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Osaka', sight: 'Dotonbori' },
+      aiSummary: 'A comprehensive culinary guide to Osaka. The author emphasizes Dotonbori as the primary food destination and provides a ranked list of street food vendors. Key recommendations include specific takoyaki and okonomiyaki spots.',
+      stats: { likes: 8900, comments: 120, shares: 540 }
+    },
+    {
+      id: 'd3',
+      type: 'video',
+      author: {
+        name: 'CultureSeeker',
+        avatar: 'https://i.pravatar.cc/150?u=culture',
+        platform: 'YouTube'
+      },
+      title: 'The Truth About Fushimi Inari',
+      content: 'Is it worth the hike? I climbed to the very top of Mount Inari to show you what it\'s really like beyond the first few gates.',
+      thumbnail: 'https://images.unsplash.com/photo-1524413840807-0c3cb6fa808d?q=80&w=2070&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Kyoto', sight: 'Fushimi Inari' },
+      aiSummary: 'An evaluative look at the Fushimi Inari shrine hike. The creator concludes that while the lower sections are crowded, the upper trails offer a peaceful experience and unique views of Kyoto. Suggests allowing 2-3 hours for the full loop.',
+      stats: { likes: 45000, comments: 1200, shares: 8900 }
+    },
+    {
+      id: 'd4',
+      type: 'video',
+      author: {
+        name: 'JapanVibes',
+        avatar: 'https://i.pravatar.cc/150?u=jv',
+        platform: 'Instagram'
+      },
+      title: 'Nara Deer Park Survival Guide',
+      content: 'The deer are cute but they are hungry! Here is how to feed them without getting chased.',
+      thumbnail: 'https://images.unsplash.com/photo-1545569341-9eb8b30979d9?q=80&w=2070&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Nara', sight: 'Nara Park' },
+      aiSummary: 'Practical advice for interacting with Nara\'s famous deer. Recommends buying crackers only when ready to feed and using specific hand signals to show you\'re out of food.',
+      stats: { likes: 15600, comments: 340, shares: 1200 }
+    },
+    {
+      id: 'd5',
+      type: 'text',
+      author: {
+        name: 'ZenTraveler',
+        avatar: 'https://i.pravatar.cc/150?u=zen',
+        platform: 'LittleRedBook'
+      },
+      title: 'Morning Zen at Ryoan-ji',
+      content: 'The rock garden at Ryoan-ji is best experienced at 8 AM. The silence is profound.',
+      thumbnail: 'https://images.unsplash.com/photo-1528164344705-4754268799af?q=80&w=2070&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Kyoto', sight: 'Ryoan-ji' },
+      aiSummary: 'A meditative guide to Kyoto\'s most famous rock garden. Suggests arriving at opening time to experience the intended tranquility and provides historical context on Zen aesthetics.',
+      stats: { likes: 3200, comments: 85, shares: 420 }
+    },
+    {
+      id: 'd6',
+      type: 'video',
+      author: {
+        name: 'StreetFoodKing',
+        avatar: 'https://i.pravatar.cc/150?u=sfk',
+        platform: 'YouTube'
+      },
+      title: 'Nishiki Market: What to Eat',
+      content: 'I ate EVERYTHING at Nishiki Market so you don\'t have to. Here are the top 5 stalls.',
+      thumbnail: 'https://images.unsplash.com/photo-1503899036084-c55cdd92da26?q=80&w=1974&auto=format&fit=crop',
+      tags: { country: 'Japan', city: 'Kyoto', sight: 'Nishiki Market' },
+      aiSummary: 'A high-energy food tour of Kyoto\'s "Kitchen". Identifies the best soy milk donuts, grilled seafood skewers, and tamagoyaki. Warns about the "no eating while walking" rule.',
+      stats: { likes: 67000, comments: 2100, shares: 15000 }
+    }
+  ]
 };

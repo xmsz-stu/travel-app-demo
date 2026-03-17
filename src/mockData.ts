@@ -266,5 +266,115 @@ export const mockData: TravelData = {
       aiSummary: 'A high-energy food tour of Kyoto\'s "Kitchen". Identifies the best soy milk donuts, grilled seafood skewers, and tamagoyaki. Warns about the "no eating while walking" rule.',
       stats: { likes: 67000, comments: 2100, shares: 15000 }
     }
+  ],
+  flights: [
+    {
+      id: 'f1',
+      price: 850,
+      outbound: {
+        airline: 'Japan Airlines',
+        airlineLogo: 'https://images.unsplash.com/photo-1612255375371-51203b1231f0?w=100&h=100&fit=crop',
+        flightNumber: 'JL 001',
+        departureTime: '10:30',
+        arrivalTime: '14:45',
+        origin: 'SFO',
+        destination: 'NRT',
+        duration: '11h 15m'
+      },
+      returnFlight: {
+        airline: 'Japan Airlines',
+        airlineLogo: 'https://images.unsplash.com/photo-1612255375371-51203b1231f0?w=100&h=100&fit=crop',
+        flightNumber: 'JL 002',
+        departureTime: '17:00',
+        arrivalTime: '10:15',
+        origin: 'NRT',
+        destination: 'SFO',
+        duration: '9h 15m'
+      },
+      stops: 0,
+      totalDuration: '20h 30m',
+      type: 'Best'
+    },
+    {
+      id: 'f2',
+      price: 620,
+      outbound: {
+        airline: 'United Airlines',
+        airlineLogo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=100&h=100&fit=crop',
+        flightNumber: 'UA 837',
+        departureTime: '11:15',
+        arrivalTime: '15:30',
+        origin: 'SFO',
+        destination: 'NRT',
+        duration: '11h 15m'
+      },
+      returnFlight: {
+        airline: 'United Airlines',
+        airlineLogo: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=100&h=100&fit=crop',
+        flightNumber: 'UA 838',
+        departureTime: '18:00',
+        arrivalTime: '11:20',
+        origin: 'NRT',
+        destination: 'SFO',
+        duration: '9h 20m'
+      },
+      stops: 0,
+      totalDuration: '20h 35m',
+      type: 'Cheapest'
+    },
+    {
+      id: 'f3',
+      price: 1200,
+      outbound: {
+        airline: 'ANA',
+        airlineLogo: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=100&h=100&fit=crop',
+        flightNumber: 'NH 007',
+        departureTime: '12:00',
+        arrivalTime: '15:15',
+        origin: 'SFO',
+        destination: 'NRT',
+        duration: '10h 15m'
+      },
+      returnFlight: {
+        airline: 'ANA',
+        airlineLogo: 'https://images.unsplash.com/photo-1569154941061-e231b4725ef1?w=100&h=100&fit=crop',
+        flightNumber: 'NH 008',
+        departureTime: '16:30',
+        arrivalTime: '09:45',
+        origin: 'NRT',
+        destination: 'SFO',
+        duration: '9h 15m'
+      },
+      stops: 0,
+      totalDuration: '19h 30m',
+      type: 'Fastest'
+    },
+    {
+      id: 'f4',
+      price: 550,
+      outbound: {
+        airline: 'Zipair',
+        airlineLogo: 'https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?w=100&h=100&fit=crop',
+        flightNumber: 'ZG 021',
+        departureTime: '14:00',
+        arrivalTime: '18:30',
+        origin: 'SFO',
+        destination: 'NRT',
+        duration: '11h 30m'
+      },
+      returnFlight: {
+        airline: 'Zipair',
+        airlineLogo: 'https://images.unsplash.com/photo-1518066000714-58c45f1a2c0a?w=100&h=100&fit=crop',
+        flightNumber: 'ZG 022',
+        departureTime: '20:00',
+        arrivalTime: '13:00',
+        origin: 'NRT',
+        destination: 'SFO',
+        duration: '9h 00m'
+      },
+      stops: 1,
+      totalDuration: '20h 30m',
+      type: 'Other'
+    }
   ]
 };

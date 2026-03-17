@@ -100,6 +100,27 @@ export interface DiscoveryPost {
   };
 }
 
+export interface FlightSegment {
+  airline: string;
+  airlineLogo?: string;
+  flightNumber: string;
+  departureTime: string;
+  arrivalTime: string;
+  origin: string;
+  destination: string;
+  duration: string;
+}
+
+export interface FlightOption {
+  id: string;
+  price: number;
+  outbound: FlightSegment;
+  returnFlight?: FlightSegment;
+  stops: number;
+  totalDuration: string;
+  type: 'Best' | 'Cheapest' | 'Fastest' | 'Other';
+}
+
 export interface TravelData {
   cities: City[];
   checklists: Checklist[];
@@ -108,4 +129,5 @@ export interface TravelData {
   notes: Note[];
   blog: string;
   discoveryPosts?: DiscoveryPost[];
+  flights?: FlightOption[];
 }

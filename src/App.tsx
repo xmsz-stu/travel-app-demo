@@ -5,9 +5,10 @@ import { NavBar } from './components/NavBar';
 import { PlanList } from './pages/PlanList';
 import { PlanDetail } from './pages/PlanDetail';
 import { Discovery } from './pages/Discovery';
+import { FlightSearch } from './pages/FlightSearch';
 
 export default function App() {
-  const [view, setView] = useState<'list' | 'detail' | 'discovery'>('list');
+  const [view, setView] = useState<'list' | 'detail' | 'discovery' | 'flights'>('flights');
   const [data, setData] = useState<TravelData>(mockData);
 
   return (
@@ -28,6 +29,10 @@ export default function App() {
 
       {view === 'discovery' && (
         <Discovery />
+      )}
+
+      {view === 'flights' && (
+        <FlightSearch />
       )}
     </div>
   );

@@ -376,5 +376,114 @@ export const mockData: TravelData = {
       totalDuration: '20h 30m',
       type: 'Other'
     }
+  ],
+  subscriptions: [
+    {
+      id: 'sub1',
+      name: 'Turkey 20250401',
+      holidayRange: '5.1 - 5.5',
+      makeupDays: ['5.9'],
+      durations: [
+        {
+          days: 14,
+          options: [
+            {
+              id: 'row1',
+              departureDate: 'May 2 (Tue)',
+              returnDate: 'May 16 (Tue)',
+              leaveDays: 8,
+              remarks: 'Best value',
+              solutions: [
+                {
+                  id: 'sol1',
+                  name: 'Solution A',
+                  price: 1250,
+                  remarks: 'Direct flights',
+                  isAlternative: false,
+                  outbound: [
+                    {
+                      airline: 'Turkish Airlines',
+                      airlineLogo: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=100&h=100&fit=crop',
+                      flightNumber: 'TK 001',
+                      departureTime: '10:30',
+                      arrivalTime: '14:45',
+                      origin: 'SFO',
+                      destination: 'IST',
+                      duration: '13h 15m'
+                    }
+                  ],
+                  returnFlights: [
+                    {
+                      airline: 'Turkish Airlines',
+                      airlineLogo: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=100&h=100&fit=crop',
+                      flightNumber: 'TK 002',
+                      departureTime: '18:00',
+                      arrivalTime: '10:00',
+                      origin: 'IST',
+                      destination: 'SFO',
+                      duration: '14h 00m'
+                    }
+                  ]
+                },
+                {
+                  id: 'sol2',
+                  name: 'Solution B',
+                  price: 980,
+                  remarks: '1 stop in FRA',
+                  isAlternative: true,
+                  outbound: [
+                    {
+                      airline: 'Lufthansa',
+                      airlineLogo: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=100&h=100&fit=crop',
+                      flightNumber: 'LH 455',
+                      departureTime: '15:00',
+                      arrivalTime: '11:00',
+                      origin: 'SFO',
+                      destination: 'FRA',
+                      duration: '11h 00m'
+                    }
+                  ],
+                  returnFlights: [
+                    {
+                      airline: 'Lufthansa',
+                      airlineLogo: 'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=100&h=100&fit=crop',
+                      flightNumber: 'LH 456',
+                      departureTime: '13:00',
+                      arrivalTime: '16:00',
+                      origin: 'FRA',
+                      destination: 'SFO',
+                      duration: '12h 00m'
+                    }
+                  ]
+                }
+              ]
+            }
+          ]
+        },
+        {
+          days: 15,
+          options: [
+            {
+              id: 'row2',
+              departureDate: 'May 1 (Mon)',
+              returnDate: 'May 16 (Tue)',
+              leaveDays: 9,
+              remarks: 'Longer stay',
+              solutions: [
+                {
+                  id: 'sol3',
+                  name: 'Solution C',
+                  price: 1350,
+                  remarks: 'Premium economy',
+                  isAlternative: false,
+                  outbound: [],
+                  returnFlights: []
+                }
+              ]
+            }
+          ]
+        }
+      ]
+    }
   ]
 };

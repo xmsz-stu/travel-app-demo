@@ -121,6 +121,36 @@ export interface FlightOption {
   type: 'Best' | 'Cheapest' | 'Fastest' | 'Other';
 }
 
+export interface FlightSubscription {
+  id: string;
+  name: string;
+  holidayRange: string;
+  makeupDays: string[];
+  durations: {
+    days: number;
+    options: FlightSubscriptionRow[];
+  }[];
+}
+
+export interface FlightSubscriptionRow {
+  id: string;
+  departureDate: string;
+  returnDate: string;
+  leaveDays: number;
+  remarks: string;
+  solutions: FlightSolution[];
+}
+
+export interface FlightSolution {
+  id: string;
+  name: string;
+  price: number;
+  remarks: string;
+  isAlternative: boolean;
+  outbound: FlightSegment[];
+  returnFlights: FlightSegment[];
+}
+
 export interface TravelData {
   cities: City[];
   checklists: Checklist[];
@@ -130,4 +160,5 @@ export interface TravelData {
   blog: string;
   discoveryPosts?: DiscoveryPost[];
   flights?: FlightOption[];
+  subscriptions?: FlightSubscription[];
 }

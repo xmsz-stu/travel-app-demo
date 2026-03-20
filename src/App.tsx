@@ -6,9 +6,10 @@ import { PlanList } from './pages/PlanList';
 import { PlanDetail } from './pages/PlanDetail';
 import { Discovery } from './pages/Discovery';
 import { FlightSearch } from './pages/FlightSearch';
+import { FlightSubscriptionPage } from './pages/FlightSubscription';
 
 export default function App() {
-  const [view, setView] = useState<'list' | 'detail' | 'discovery' | 'flights'>('flights');
+  const [view, setView] = useState<'list' | 'detail' | 'discovery' | 'flights' | 'subscriptions'>('subscriptions');
   const [data, setData] = useState<TravelData>(mockData);
 
   return (
@@ -33,6 +34,10 @@ export default function App() {
 
       {view === 'flights' && (
         <FlightSearch />
+      )}
+
+      {view === 'subscriptions' && (
+        <FlightSubscriptionPage />
       )}
     </div>
   );
